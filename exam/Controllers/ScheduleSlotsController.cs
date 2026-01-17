@@ -22,7 +22,7 @@ public class ScheduleSlotsController(IScheduleSlotService ScheduleSlotService) :
     }
     
     [HttpGet("{ScheduleSlotId}")]
-    public async Task<Response<ScheduleSlot>> GetSlotByDoctorIdAsync(int ScheduleSlotId)
+    public async Task<Response<ScheduleSlotDtoForJoinDoctors>> GetSlotByDoctorIdAsync(int ScheduleSlotId)
     {
         return await ScheduleSlotService.GetSlotByDoctorId(ScheduleSlotId);
     }
