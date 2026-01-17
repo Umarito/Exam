@@ -127,8 +127,28 @@ public class ScheduleSlotService(ApplicationDBContext applicationDBContext, ILog
             return new Response<string>(HttpStatusCode.InternalServerError, "Internal Server Error");
         }
     }
-    public Task<Response<ScheduleSlot>> GetSlotByDoctorId(int doctorId)
+    public async Task<Response<ScheduleSlotDtoForJoinDoctors>> GetSlotByDoctorId(int doctorId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var conn = _context.Connection();
+            var query = "select d.fullname,d.specialty,s.doctor_id,s.room_id,s.start_time,s.end_time from schedule_slots s join doctors d on s.doctor_id = d.id where s.doctor_id = @id";
+            var res = await conn.QueryFirstOrDefaultAsync<ScheduleSlotDtoForJoinDoctors>(query,new{id = doctorId});
+            if (res == null)
+            {
+                _logger.LogWarning("Something went wrong");
+                return new Response<ScheduleSlotDtoForJoinDoctors>(HttpStatusCode.InternalServerError,"Couldn't find ScheduleSlot");
+            }
+            else
+            {
+                _logger.LogInformation("Nothing went wrong");
+                return new Response<ScheduleSlotDtoForJoinDoctors>(HttpStatusCode.OK,"The data that you were searching for:",res);
+            }
+        }
+        catch(Exception ex)
+        {
+            _logger.LogWarning(ex.Message);
+            return new Response<ScheduleSlotDtoForJoinDoctors>(HttpStatusCode.InternalServerError, "Internal Server Error");
+        }
     }
 }

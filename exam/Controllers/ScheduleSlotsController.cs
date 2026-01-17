@@ -22,9 +22,9 @@ public class ScheduleSlotsController(IScheduleSlotService ScheduleSlotService) :
     }
     
     [HttpGet("{ScheduleSlotId}")]
-    public async Task<Response<ScheduleSlot>> GetScheduleSlotByIdAsync(int ScheduleSlotId)
+    public async Task<Response<ScheduleSlot>> GetSlotByDoctorIdAsync(int ScheduleSlotId)
     {
-        return await ScheduleSlotService.GetSlotById(ScheduleSlotId);
+        return await ScheduleSlotService.GetSlotByDoctorId(ScheduleSlotId);
     }
     [HttpPatch("{ScheduleSlotId}")]
     public async Task<Response<string>> SoftDeleteAsync(int ScheduleSlotId)
